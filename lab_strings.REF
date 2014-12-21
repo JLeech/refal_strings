@@ -1,0 +1,82 @@
+$ENTRY Go {
+    = <Prout <Calc <Spar <Card>>>>;
+    /*= <Prout <Length <Card> (0)>>;
+    = <Prout <Check (<Sort <Subs <Card> >>) ('aaabaac')>>;*/
+    /*= <Prout  <Check (('ca')('aa')('ba'))('aab') >>;*/
+    }
+
+Length {
+    s.First e.1 (s.1) = 
+        <Length e.1 ( <Add 1 s.1> ) >;
+     (s.1) = s.1;
+}
+
+
+Check {
+    (e.KA(e.L)e.RA)(e.Z e.L e.KL) = e.L;
+    (e.1)(e.2)='';
+}
+
+Sort {
+    e.1 (e.X) e.2 (e.Y) e.3
+        , <Sub <Length e.X (0)>  <Length e.Y (0)> >: '-' s.Z 
+        = "'"e.1"'" <Sort (e.Y) (e.X) e.2 e.3>;
+    e.1 = e.1;
+}
+
+
+Subs {
+    t.First e.Tail =
+        <Prefixes t.First e.Tail>
+        <Postfixes e.Tail>;
+}
+
+Prefixes {
+    =;
+    e.Prefix t.Last = 
+    (e.Prefix t.Last)
+    <Prefixes e.Prefix>
+    <Postfixes e.Prefix>
+}
+
+Postfixes {
+    =;
+    t.First e.Substr = 
+    (t.First e.Substr)
+    <Postfixes e.Substr>   
+}
+
+Rev {
+    t.X e.1 = <Rev e.1> t.X;
+    = ;
+    }
+
+Con {
+	 '"'e.1'"' '"'e.2 '"' = '"'e.1 e.2'"';
+	 e.1 = e.1;
+	}
+
+
+Calc {
+    e.1 '!' '"'e.2'"' e.3 = <Calc e.1 <Rev '"'e.2'"'> e.3>;
+    e.1 '+' e.2 =<Calc <Con <Calc e.1> <Calc e.2>>>;
+    e.L '"'e.1'"' '*' '"'e.2'"' e.R = <Calc e.L '"'<Check (<Sort <Subs e.1> >) (e.2)>'"' e.R>  ;
+    ( e.1 ) = <Calc e.1> ;
+    e.1         = e.1;
+    = ;
+    }
+
+/*= <Prout <Check (<Sort <Subs <Card> >>) ('aaabaac')>>;*/
+
+Spar { e.1 = <Spar1 (L) e.1>; }
+
+Spar1 {
+    (e.S) '(' e.T = <Spar1 ((e.S)) e.T>;
+    ((e.S) e.1) ')' e.T = 
+        <Spar1 (e.S (e.1)) e.T>;
+    (L e.S) ')' e.T = ERROR;
+    (e.S) s.X e.T = 
+        <Spar1 (e.S s.X) e.T>;
+    (L e.S) = e.S;
+    (e.S) = ERROR;
+    }
